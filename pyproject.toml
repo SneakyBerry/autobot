@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "salaryevo-auto-bot"
+version = "0.1.0"
+description = ""
+authors = ["Kolybelkin Nikita <n.kolybelkin@rambler-co.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+aiogram = "^2.18"
+pydantic = "^1.9.0"
+tortoise-orm = {extras = ["asyncpg"], version = "^0.18.1"}
+
+[tool.poetry.dev-dependencies]
