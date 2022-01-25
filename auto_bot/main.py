@@ -36,6 +36,8 @@ START_TEXT = """
 
 Если ты хочешь удалить свои данные из бота - напиши /delete + номер машины.
 Например: /delete A111AA777 (принимается латиница, кириллица, и буквы любого регистра)
+
+Если ты хочешь посмотреть список своих машин - напиши /my_cars.
 """
 
 
@@ -71,6 +73,12 @@ def normalize_num(text: str) -> Tuple[Optional[str], Optional[str]]:
 @dispatcher.message_handler(commands=["start"])
 async def start(message: types.Message):
     return SendMessage(message.chat.id, text=START_TEXT)
+
+
+@dispatcher.message_handler(commands=["my_cars"])
+async def my_cars(message: types.Message):
+    res = await Plate.filter(telegram_user=message.from_user.id).all()
+    await message.reply("\n".join(record.plate_number for record in res))
 
 
 @dispatcher.message_handler(commands=["reg"])
@@ -191,6 +199,9 @@ async def on_startup(dp):
             ),
             types.BotCommand(
                 command="/delete", description="Удалить свой номер из базы данных бота."
+            ),
+            types.BotCommand(
+                command="/my_cars", description="Показать список моих машин."
             ),
         ],
     )
